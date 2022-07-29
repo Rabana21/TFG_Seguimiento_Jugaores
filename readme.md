@@ -1,8 +1,8 @@
 # Proyecto de detección y seguimiento de jugadores de balonamano en un a secuancia de vídeo.
 ---
 Los scripts más importantes dentro del proyecto son:
-* torchserve_handler.py
-* views.py
+* [hander](./model-server/ressources/torchserve_handler.py)
+* [servidor](./detection/detection/views.py)
 
 1. torchserve_handler
 Dentro de este script veremos diferentes metodos a tener en cuneta para la ejecución del proecto:
@@ -15,13 +15,12 @@ Dentro de este script veremos diferentes metodos a tener en cuneta para la ejecu
 - remove_out_range -> filtro para eliminar detecciones con un area demasiado grande y eliminar a objetos que probablemente sean aficionados
 - xywh2xyxy -> convertirlo al bormato deseado para el bounding_box
 
-2. views
+2. Views servidor
 - index -> encargada de llamar al handler para hacer la inferencia del vídeo. Recoge también los valores max_age y n_init para poder hacer la inicialización del deepsort.
 - download_file -> devolverá al usuario el vídeo de la detección más el json
 
-Ejecución del proyecto
+## Ejecución del proyecto
 ---
-## ANTES DE EJECTUAR:
 Introducrnos en la carpeta `cd yolov5/` habrá que instalar sus requerimientos y a ejecutar el `../model-server/ressources/download_weights.sh` copiamos el archivo .pt dentro de ressources `cp ./yolov5x.pt ../model-server/ressources` y por ultimo generar el archivo torchsript necesario para el handler:
 ```
 python ./export.py --weights ./yolov5x.pt --img 640 --batch 1
@@ -45,7 +44,14 @@ os.system('torchserve --start \
            --model-store ../model-store \
            --models my_model_name.mar')
 ```
-Para parar la ejecución del handler `os.system('torchserve --stop')` y , después se ejecuta el servidor que acepta las peticiones ubicandonos en [detection](/detection) y hacer `python manage.py runserver`
+Para parar la ejecución del handler `os.system('torchserve --stop')` y , después se ejecuta el servidor que acepta las peticiones ubicandonos en [detection](/detection) y hacer `python manage.py runserver`.
+---
+Para la ejecución del proyecto se puede utulizar el [video de muestra](./detection/media/video.mp4)
+
+## Resultados
+Los resultados obtenidos podemos verlo dentro de la carpeta [media](./detecion/media) donde lo encontraremos con el sufijo *_detection* y el resultado serí así:
+![Resultado](./detecion/media/video_detecion.webm)
+
 ## Requerimientos 
 Es recomendable utilizar [Anaconda](https://www.anaconda.com/) para poder manejar mejor las versiones de los paquetes. Teniendolo instalado y operativo descargar los siguientes paquetes:
 ```
