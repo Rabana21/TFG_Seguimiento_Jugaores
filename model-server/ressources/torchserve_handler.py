@@ -132,7 +132,7 @@ class ModelHandler(BaseHandler):
             self.n_init = int(row.get("n_init").decode())
             self.max_age = int(row.get("max_age").decode())
         device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-        yolo_model = '/home/ruben/Documentos/torchserve/yolov5/yolov5x.pt'
+        yolo_model = '/home/ruben/Documentos/torchserve/model-server/ressources/yolov5x.pt'
         model = DetectMultiBackend(yolo_model, device=device, dnn=False)
         self.names = model.module.names if hasattr(model, 'module') else model.names
         stride, _ , pt = model.stride, model.names, model.pt

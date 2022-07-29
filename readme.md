@@ -1,4 +1,4 @@
-Proyecto de detección y seguimiento de jugadores de balonamano en un a secuancia de vídeo.
+# Proyecto de detección y seguimiento de jugadores de balonamano en un a secuancia de vídeo.
 ---
 Los scripts más importantes dentro del proyecto son:
 * torchserve_handler.py
@@ -21,19 +21,45 @@ Dentro de este script veremos diferentes metodos a tener en cuneta para la ejecu
 
 Ejecución del proyecto
 ---
-ANTES DE EJECTUAR:
-```
-cd yolov5/
-```
+## ANTES DE EJECTUAR:
+Introducrnos en la carpeta `cd yolov5/` habrá que instalar sus requerimientos y a ejecutar el `../model-server/ressources/download_weights.sh` copiamos el archivo .pt dentro de ressources `cp ./yolov5x.pt ../model-server/ressources` y por ultimo generar el archivo torchsript necesario para el handler:
 ```
 python ./export.py --weights ./yolov5x.pt --img 640 --batch 1
 ```
+Tras haber hecho esto, generar el modelo para hacer la inferencia para las detecciones:
 ```
 torch-model-archiver --model-name my_model_name \
 --version 0.1 --serialized-file ./yolov5x.torchscript \
 --handler ../model-server/ressources/torchserve_handler.py \
 --extra-files ../model-server/ressources/index_to_name.json,../model-server/ressources/torchserve_handler.py
-mv my_model_name.mar ../model-store
 ```
+Y por últmo mover el archivo generado en model_store 
+`mv my_model_name.mar ../model-store`
 
-Para poder ejecutar el proyecto, seguir las instrucciones detalladas en el manual de instalación de la memoria.
+Habiendo hecho esto, podremos ejecutar satisfactoriamente el handler, ubicandonos en la carpeta /model-server
+```python
+import os 
+os.system('torchserve --start \
+           --ncs \
+           --ts-config ../model-store/config.properties \
+           --model-store ../model-store \
+           --models my_model_name.mar')
+```
+Para parar la ejecución del handler `os.system('torchserve --stop')` y , después se ejecuta el servidor que acepta las peticiones ubicandonos en [detection](/detection) y hacer `python manage.py runserver`
+## Requerimientos 
+Es recomendable utilizar [Anaconda](https://www.anaconda.com/) para poder manejar mejor las versiones de los paquetes. Teniendolo instalado y operativo descargar los siguientes paquetes:
+```
+ sudo apt install default-jre 
+ conda install -c pytorch torchserve 
+ conda install -c pytorch torch-model-archiver
+ conda install -c pytorch torch-workflow-archiver
+ sudo apt-get install -y libgl1-mesa-glx
+ sudo apt-get install -y libglib2.0-0
+ sudo apt-get install -y python3-distutils
+ conda install -c pytorch-lts torchvision 
+ conda install -c fastai opencv-python-headless
+ conda install -c conda-forge onnx
+ conda install -c conda-forge coremltools 
+ conda install -c anaconda django
+ conda install pytorch torchvision cudatoolkit=9.0 -c pytorch
+```
