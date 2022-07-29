@@ -4,8 +4,7 @@ Los scripts más importantes dentro del proyecto son:
 * [hander](./model-server/ressources/torchserve_handler.py)
 * [servidor](./detection/detection/views.py)
 
-1. torchserve_handler
-Dentro de este script veremos diferentes metodos a tener en cuneta para la ejecución del proecto:
+1. **torchserve_handler** -> Dentro de este script veremos diferentes metodos a tener en cuneta para la ejecución del proecto:
 - init -> inicializarán los parametros que serán utilizados en el handler
 - inference -> el encargado de llamar al YOLO para hacer las detecciones
 - preprocess -> dividir el vídeo en frames para poder procesarlo con el inference
@@ -15,7 +14,7 @@ Dentro de este script veremos diferentes metodos a tener en cuneta para la ejecu
 - remove_out_range -> filtro para eliminar detecciones con un area demasiado grande y eliminar a objetos que probablemente sean aficionados
 - xywh2xyxy -> convertirlo al bormato deseado para el bounding_box
 
-2. Views servidor
+2. **Views servidor**
 - index -> encargada de llamar al handler para hacer la inferencia del vídeo. Recoge también los valores max_age y n_init para poder hacer la inicialización del deepsort.
 - download_file -> devolverá al usuario el vídeo de la detección más el json
 
@@ -45,12 +44,10 @@ os.system('torchserve --start \
            --models my_model_name.mar')
 ```
 Para parar la ejecución del handler `os.system('torchserve --stop')` y , después se ejecuta el servidor que acepta las peticiones ubicandonos en [detection](/detection) y hacer `python manage.py runserver`.
----
-Para la ejecución del proyecto se puede utulizar el [video de muestra](./detection/media/video.mp4)
 
 ## Resultados
-Los resultados obtenidos podemos verlo dentro de la carpeta [media](./detecion/media) donde lo encontraremos con el sufijo *_detection* y el resultado serí así:
-![Resultado](./detecion/media/video_detecion.webm)
+Para la ejecución del proyecto se puede utulizar el [video de muestra](./detection/media/video.mp4). Los resultados obtenidos podemos verlo dentro de la carpeta [media](./detecion/media) donde lo encontraremos con el sufijo *_detection* y el resultado serí así:
+![Resultado](./detection/media/video_detecion.webm)
 
 ## Requerimientos 
 Es recomendable utilizar [Anaconda](https://www.anaconda.com/) para poder manejar mejor las versiones de los paquetes. Teniendolo instalado y operativo descargar los siguientes paquetes:
