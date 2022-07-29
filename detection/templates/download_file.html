@@ -1,0 +1,25 @@
+{% extends "./plantilla.html" %}
+
+{% block title %} Resultados {% endblock %}
+
+{% block body %}
+<style>	
+    .centrado{text-align:center; padding:8px;}
+    center{margin:16px 0;}
+    .titulo{margin: 10px;}
+</style>
+<div class="titulo"><h1>Resultados</h1></div>
+<div class="centrado">
+    <video name='demo' controls muted autoplay width='50%' height='40%'>
+        <source src="/media/{{videofile}}" type="video/webm"></source>
+    </video>
+</div>
+
+<div class="titulo">
+    <h3>Descargar los ficheros aqui abajo</h3>
+    <div><a href="{% url 'download_file' filename=filename videofile=videofile %}">Descargar Video del seguimiento</a></div>
+    <div><a href="{% url 'download_file' filename=filename %}">Descargar Json del seguimiento</a></div>     
+</div>
+<a href="{% url 'homepage' %}" class="btn btn-outline-primary">Volver</a>
+
+{% endblock %}
